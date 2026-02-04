@@ -17,7 +17,7 @@
         .container { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.05); width: 100%; max-width: 1250px; }
         h2 { font-family: 'Moul', serif; text-align: center; color: #1a3a5f; margin-bottom: 25px; font-size: 20px; }
         .table-responsive { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 850px; table-layout: fixed; border: 1px solid #000; }
+        table { width: 100%; border-collapse: collapse; min-width: 850px; border: 1px solid #000; table-layout: fixed; }
         th, td { border: 1px solid #000; padding: 10px; font-size: 14px; word-wrap: break-word; vertical-align: middle; }
         th { background: #f8f9fa; font-family: 'Moul', serif; font-weight: normal; }
         .text-center { text-align: center; }
@@ -42,7 +42,7 @@
         <button class="btn-action" style="background:#1d6f42;" onclick="exportToExcel()">ទាញយក Excel</button>
     </div>
     <div class="container">
-        <h2 id="mainTitle">នាមសប្បុរសជនចូលកសាងសាលាឆាន់វត្តស្វាយមីង</h2>
+        <h2>នាមសប្បុរសជនចូលកសាងសាលាឆាន់វត្តស្វាយមីង</h2>
         <div class="table-responsive">
             <table>
                 <thead>
@@ -58,7 +58,8 @@
     </div>
     <script>
         const initialData = [
-            { date: "2024-10-17", name: "ឧបាសក គួយស្រ៊ី ឧបាសិកា ហ័រ", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            // បញ្ជីឈ្មោះទាំងអស់ដែលអ្នកបានផ្ដល់ឱ្យ
+            { date: "2024-10-17", name: "ឧសក គួយស្រ៊ី ឧបាសិកា ហ័រ", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
             { date: "2024-11-13", name: "ឧបាសិកា តាន់ សំអ៊ូ ឧបាសិកា តាន់ សុផល", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
             { date: "2024-11-24", name: "លោក ជា រស្មី អ្នកស្រី ថន វណ្ណៈ", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
             { date: "2024-10-17", name: "លោក ស្រ៊ាច្រេក អ្នកស្រី ស៊ាងហេង", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
@@ -70,15 +71,84 @@
             { date: "2024-12-10", name: "ឧបាសក អ៊ឹង យុនប៊ួយ ឧបាសិកា ចេង ផេកជឹង ឧបាសក ឈួន ជា ឧបាសក កៅ សុខុន", item: "សសររានហាល១ដើម", phone: "", price: 1500, currency: "USD" },
             { date: "2024-12-11", name: "ឧបាសក គឹម ឱម ឧបាសិកា ហ៊ឹង និម", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
             { date: "2024-12-11", name: "អ្នកស្រី សាន សេងជុន លោក តែ លាងស្រ៊ុន អ្នកស្រី សាន សេងជាន", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
-            { date: "2024-11-13", name: "គ្រូ ឯម យិន យាយ មាលា", item: "ជណ្ដើរ", phone: "", price: 500, currency: "USD" },
+            { date: "2024-11-13", name: "គ្រូ ឯម យិន យា្យ មាលា", item: "ជណ្ដើរ", phone: "", price: 500, currency: "USD" },
             { date: "2024-11-13", name: "ឧបាសិកា វ៉ន ភាន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "អ្នកស្រី វ៉ន ភា", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "លោក អំ មេត្តា អ្នកស្រី ស្រី ឡែន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "លោក ប៊ុន វណ្ណាក់ ភួង ផេងយឿន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "លោក ប្រុស អ្នកស្រី ណៃអ៊ាន លោក សាយ អ្នកស្រី ណៃ ស៊ាន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "តា អ៊ាង អុល យា្យ ស៊ុយឡេង លោក ឈាង ឧបាសិកា អ៊ាង ឡា", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "យា្យ អ៊ាង នាង", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "យា្យ អ៊ាង អូន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសក ឃួន ដន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសក ម៉ក់ ញ៉", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសិកា នន់ រ៉េន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "តា ស៊ា យា្យ មាន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "តា ដឿន យា្យ យឿន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ផ្កាយ ថុល", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "គុជ ណៃស្រ៊ុន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "អ្នកស្រី ហឿង", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "តា ថូ យា្យ ហ៊ន់", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "តា អេង យា្យ សុន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "សយ ហឿន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "តា វ៉ន យា្យ ស្រ៊ុន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "លោក រីណា អ្នកស្រី ឃិន សុខឃាក់", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "លោក ឃិន សុខខេង អ្នកស្រី គូ សារាំ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "យា្យ នាង", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "លោក តេងលី", item: "កសាង", phone: "", price: 100000, currency: "KHR" },
+            { date: "2024-11-13", name: "ធួន ជន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-12-01", name: "តា លី យា្យ ភាង", item: "គ្រឹះ២ដើម", phone: "", price: 400000, currency: "KHR" },
+            { date: "2024-11-13", name: "ឧបាសិកា សៅ ផន កូនចៅ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសក ឌឿន ឧបាសិកា ហត់", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសិកា ឆាយ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-12-19", name: "ឧបាសក ស្រ៊ាន ឧបាសិកា រ៉ុម", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-12-19", name: "ឧបាសិកា យ៉ាវ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-12-19", name: "ឧបាសិកា ណេន ទាយក យេក", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-12-19", name: "ឧបាសក ធូ ឌឿន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសក ម៉ាញ្ញាណ ឧបាសិកា មី", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2024-12-23", name: "យូរ រស្មី", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-05", name: "ឧបាសក មៀវ ញ៉", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-05", name: "តា វ៉ន យា្យ គង់", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-05", name: "តាផាត យា្យលីម", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-05", name: "យា្យ ស្រ៊ន់", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
             { date: "2025-01-07", name: "ឧបាសក ផៃ ក្រុយ ឧបាសិកា ប៊ូលឹម", item: "គ្រឹះ២ដើម", phone: "", price: 100, currency: "USD" },
+            { date: "2025-01-07", name: "គីម សេងអាន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-08", name: "អ្នកគ្រូ ប៊ូ ឡាយ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-08", name: "តា ហេង", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-08", name: "តារីម យាយយ៉ាត", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-02-02", name: "តាស្រ៊ន់ យាយអ៊ីម", item: "បង្អួច១វង់", phone: "", price: 800, currency: "USD" },
+            { date: "2025-02-02", name: "ឧ.ស សេន សៅ ឧ.សិ ហែមស្រឿន", item: "បង្អួច១វង់", phone: "", price: 800, currency: "USD" },
+            { date: "2025-02-02", name: "យាយ សន់", item: "ទូទៅ", phone: "", price: 100000, currency: "KHR" },
+            { date: "2025-02-15", name: "យាយ ប៉ែន អ៊ាមសេង", item: "បន្ទប់ទឹក", phone: "", price: 500, currency: "USD" },
+            { date: "2025-02-16", name: "ឈួន ជា កៅ សុខខុន អ៊ឹង ឈុនលាយ ហាក់ មួយជូ", item: "បន្ទប់ទឹក", phone: "", price: 500, currency: "USD" },
+            { date: "2025-02-16", name: "តាតៃ យាយនាង", item: "កសាង", phone: "", price: 300000, currency: "KHR" },
+            { date: "2025-02-16", name: "ឧ.សិ ស៊ាន ធាង", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-02-17", name: "សេង ណារិទ្ធ នួន កឹមហន", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2025-02-21", name: "យាយ សេង យៀវ", item: "បន្ទប់ទឹក", phone: "", price: 100, currency: "USD" },
+            { date: "2025-02-21", name: "ស៊ន រ៉ន និង អ្នកស្រី ភា", item: "បន្ទប់ទឹក", phone: "", price: 500, currency: "USD" },
+            { date: "2025-02-24", name: "តា ស៊ា យា្យ មាន", item: "កសាង", phone: "", price: 300000, currency: "KHR" },
+            { date: "2025-02-24", name: "អាន ឡុងស្រួច ភរិយា ឡាក់ដាវី", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-02-24", name: "ឆន អូន ជៀប សន់", item: "សសររានហាលខាងមុខ", phone: "", price: 1000, currency: "USD" },
+            { date: "2025-06-25", name: "ឧបាសក អ៊ុន ទ្រី ឧបាសិកា ងួន គឹមស្រ៊ុន", item: "សសរជើងរៀងខាងក្រោយ", phone: "", price: 1500, currency: "USD" },
+            { date: "2025-07-20", name: "លោក ឈិន ញ៉ ភរិយា ប៉ាន់ ចាន់ណា និងកូនចៅ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-07-20", name: "ផល ហ៊ាន នឹងកូនចៅ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-07-20", name: "តាធី យាយ ចាន់លី និងកូនចៅ", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-07-27", name: "ឧបាសិកា យឹម ថេត ឧបាសក កាន់ គា ឧបាសិកា យឹម ធិ", item: "កសាងជណ្ដើរ", phone: "", price: 500, currency: "USD" },
+            { date: "2025-09-09", name: "លោក អ៊ឹង ឡេង អ្នកស្រី គង់ ណៃសឿន", item: "សសរជើងរៀងខាងមុខ", phone: "", price: 2000, currency: "USD" },
+            { date: "2025-09-10", name: "លោកស្រី ជឹង មួយគាង", item: "សសរជើងរៀង ២ដើម", phone: "", price: 3000, currency: "USD" },
+            { date: "2025-10-03", name: "តាម ហ៊ីម យាយ ឆាក់", item: "ស៊ីម៉ង់ត៍ ៥តោន", phone: "", price: 500, currency: "USD" },
+            { date: "2025-10-05", name: "ឧបាសក គី ប៉ូច ឧបាសិកា អ៊ុន វណ្ណា លោក ប៉ូច អូន អ្នកស្រី ទិត្យ រ៉ា", item: "ទ្វារបាល ១គូរ", phone: "", price: 500, currency: "USD" },
+            { date: "2025-10-11", name: "ឧ.ស. ថេង នាង ពេទ្យ ព្រហស្បតិ៍ អ្នកស្រី ថេង ស៊ាងហៃ", item: "សសរជើងរៀងខាងមុខ", phone: "", price: 500, currency: "USD" },
             { date: "2025-10-18", name: "ឧបាសក សឹម ខន ឧបាសិកា ហួង គ្រើន", item: "សសររានហាលខាងកើត", phone: "", price: 6000000, currency: "KHR" },
-            { date: "2025-10-18", name: "ឧបាសក ផៃ សុខា ឧបាសិកា ស៊ុន ស្រីលាភ", item: "សសរជាងរៀងខាងកើត", phone: "", price: 2000, currency: "USD" }
+            { date: "2025-10-18", name: "ឧបាសក ផៃ សុខា ឧបាសិកា ស៊ុន ស្រីលាភ", item: "សសរជើងរៀងខាងកើត", phone: "", price: 2000, currency: "USD" }
         ];
 
-        let donations = JSON.parse(localStorage.getItem('donations')) || initialData;
-        if (!localStorage.getItem('donations')) localStorage.setItem('donations', JSON.stringify(donations));
+        // ពិនិត្យ LocalStorage
+        let donations = JSON.parse(localStorage.getItem('donations'));
+        if (!donations || donations.length === 0) {
+            donations = initialData;
+            localStorage.setItem('donations', JSON.stringify(donations));
+        }
 
         function renderTable(data) {
             const tableBody = document.getElementById('tableBody');
@@ -95,6 +165,7 @@
             document.getElementById('totalUSD').innerText = totalUSD.toLocaleString() + " $";
             document.getElementById('totalKHR').innerText = totalKHR.toLocaleString() + " ៛";
         }
+
         function addNewData() {
             const date = document.getElementById('dateInput').value;
             const name = document.getElementById('nameInput').value;
@@ -108,8 +179,9 @@
             renderTable(donations);
             document.getElementById('nameInput').value = ''; document.getElementById('itemInput').value = ''; document.getElementById('phoneInput').value = ''; document.getElementById('priceInput').value = '';
         }
+
         function deleteRow(idx) { if(confirm("លុបទិន្នន័យនេះ?")) { donations.splice(idx, 1); localStorage.setItem('donations', JSON.stringify(donations)); renderTable(donations); } }
-        function exportToExcel() { const ws = XLSX.utils.json_to_sheet(donations); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Donations"); XLSX.writeFile(wb, "បញ្ជីសប្បុរសជន.xlsx"); }
+        function exportToExcel() { const ws = XLSX.utils.json_to_sheet(donations); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Donations"); XLSX.writeFile(wb, "បញ្ជីសប្បុរសជន_វត្តស្វាយមីង.xlsx"); }
         window.onload = function() { document.getElementById('dateInput').value = new Date().toISOString().split('T')[0]; renderTable(donations); };
     </script>
 </body>
