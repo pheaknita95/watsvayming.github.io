@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធគ្រប់គ្រងសប្បុរសជន - វត្តស្វាយមីង</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&family=Moul&display=swap');
+        * { box-sizing: border-box; }
+        body { font-family: 'Kantumruy Pro', sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        .input-form { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 1250px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; align-items: flex-end; border-top: 5px solid #4a76ad; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 13px; margin-bottom: 6px; font-weight: bold; color: #333; }
+        .input-group input, .input-group select { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Kantumruy Pro'; outline: none; width: 100%; }
+        .btn-add { background: #28a745; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; height: 42px; }
+        .container { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.05); width: 100%; max-width: 1250px; }
+        h2 { font-family: 'Moul', serif; text-align: center; color: #1a3a5f; margin-bottom: 25px; font-size: 20px; }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 850px; table-layout: fixed; border: 1px solid #000; }
+        th, td { border: 1px solid #000; padding: 10px; font-size: 14px; word-wrap: break-word; vertical-align: middle; }
+        th { background: #f8f9fa; font-family: 'Moul', serif; font-weight: normal; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .no-print { margin-bottom: 15px; display: flex; gap: 10px; justify-content: flex-end; width: 100%; max-width: 1250px; flex-wrap: wrap; }
+        .btn-action { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; font-family: 'Kantumruy Pro'; flex: 1; min-width: 120px; }
+        @media print { .no-print, .input-form, td:last-child, th:last-child { display: none !important; } body { padding: 0; background: white; } .container { box-shadow: none; width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="input-form no-print">
+        <div class="input-group"><label>បរិច្ឆេទ</label><input type="date" id="dateInput"></div>
+        <div class="input-group" style="grid-column: span 2;"><label>ឈ្មោះ</label><input type="text" id="nameInput" placeholder="ឈ្មោះ..."></div>
+        <div class="input-group"><label>សម្ភារៈ</label><input type="text" id="itemInput" placeholder="សម្ភារៈ..."></div>
+        <div class="input-group"><label>Tel</label><input type="text" id="phoneInput" placeholder="Tel..."></div>
+        <div class="input-group"><label>តម្លៃ</label><input type="number" id="priceInput" placeholder="0"></div>
+        <div class="input-group"><label>រូបិយប័ណ្ណ</label><select id="currencyInput"><option value="USD">$ (USD)</option><option value="KHR">៛ (KHR)</option></select></div>
+        <button class="btn-add" onclick="addNewData()">+ បន្ថែម</button>
+    </div>
+    <div class="no-print">
+        <button class="btn-action" style="background:#4a76ad;" onclick="window.print()">បោះពុម្ព PDF</button>
+        <button class="btn-action" style="background:#1d6f42;" onclick="exportToExcel()">ទាញយក Excel</button>
+    </div>
+    <div class="container">
+        <h2 id="mainTitle">នាមសប្បុរសជនចូលកសាងសាលាឆាន់វត្តស្វាយមីង</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr><th style="width: 110px;">បរិច្ឆេទ</th><th>ឈ្មោះ</th><th>សម្ភារៈ</th><th style="width: 120px;">Tel</th><th style="width: 130px;">តម្លៃ</th><th class="no-print" style="width: 60px;">លុប</th></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+                <tfoot>
+                    <tr style="font-weight:bold;"><td colspan="4" class="text-right" style="font-family: 'Moul', serif;">សរុបដុល្លារ ($) ៖</td><td id="totalUSD" class="text-center" style="color:#28a745;">0 $</td><td class="no-print"></td></tr>
+                    <tr style="font-weight:bold;"><td colspan="4" class="text-right" style="font-family: 'Moul', serif;">សរុបរៀល (៛) ៖</td><td id="totalKHR" class="text-center" style="color:#d32f2f;">0 ៛</td><td class="no-print"></td></tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script>
+        const initialData = [
+            { date: "2024-10-17", name: "ឧបាសក គួយស្រ៊ី ឧបាសិកា ហ័រ", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសិកា តាន់ សំអ៊ូ ឧបាសិកា តាន់ សុផល", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-11-24", name: "លោក ជា រស្មី អ្នកស្រី ថន វណ្ណៈ", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-10-17", name: "លោក ស្រ៊ាច្រេក អ្នកស្រី ស៊ាងហេង", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសិកា ឃឹម ហេន ឧបាសិកា ឃឹម ហ៊ាង", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-11-24", name: "ឧបាសក រ៉ូវ ជិនឡេង ឧបាសិកា ឈុន សុខុម", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-11-28", name: "លោក ហ៊ន់ កុយ អ្នកស្រី អ៊ឹង វួចហ៊ាង", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-12-10", name: "ឧបាសក គី ប៉ូច ឧបាសិកា អ៊ុន វណ្ណា លោក ប៉ូច អូន អ្នកស្រី ទិត្យ រ៉ា", item: "សសររានហាល១ដើម", phone: "", price: 1500, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសិកា យឹម ថេត ឧបាសក កាន់ គា ឧបាសិកា យឹម ធិ", item: "សសររានហាល១ដើម", phone: "", price: 1500, currency: "USD" },
+            { date: "2024-12-10", name: "ឧបាសក អ៊ឹង យុនប៊ួយ ឧបាសិកា ចេង ផេកជឹង ឧបាសក ឈួន ជា ឧបាសក កៅ សុខុន", item: "សសររានហាល១ដើម", phone: "", price: 1500, currency: "USD" },
+            { date: "2024-12-11", name: "ឧបាសក គឹម ឱម ឧបាសិកា ហ៊ឹង និម", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-12-11", name: "អ្នកស្រី សាន សេងជុន លោក តែ លាងស្រ៊ុន អ្នកស្រី សាន សេងជាន", item: "សសរកន្លោង១ដើម", phone: "", price: 2000, currency: "USD" },
+            { date: "2024-11-13", name: "គ្រូ ឯម យិន យាយ មាលា", item: "ជណ្ដើរ", phone: "", price: 500, currency: "USD" },
+            { date: "2024-11-13", name: "ឧបាសិកា វ៉ន ភាន", item: "គ្រឹះ១ដើម", phone: "", price: 50, currency: "USD" },
+            { date: "2025-01-07", name: "ឧបាសក ផៃ ក្រុយ ឧបាសិកា ប៊ូលឹម", item: "គ្រឹះ២ដើម", phone: "", price: 100, currency: "USD" },
+            { date: "2025-10-18", name: "ឧបាសក សឹម ខន ឧបាសិកា ហួង គ្រើន", item: "សសររានហាលខាងកើត", phone: "", price: 6000000, currency: "KHR" },
+            { date: "2025-10-18", name: "ឧបាសក ផៃ សុខា ឧបាសិកា ស៊ុន ស្រីលាភ", item: "សសរជាងរៀងខាងកើត", phone: "", price: 2000, currency: "USD" }
+        ];
+
+        let donations = JSON.parse(localStorage.getItem('donations')) || initialData;
+        if (!localStorage.getItem('donations')) localStorage.setItem('donations', JSON.stringify(donations));
+
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            let totalUSD = 0, totalKHR = 0;
+            data.forEach((item, index) => {
+                const d = item.date.split('-');
+                const formattedDate = `${d[2]}.${d[1]}.${d[0]}`;
+                const symbol = item.currency === 'USD' ? '$' : '៛';
+                const p = parseFloat(item.price || 0);
+                if (item.currency === 'USD') totalUSD += p; else totalKHR += p;
+                tableBody.innerHTML += `<tr><td class="text-center">${formattedDate}</td><td>${item.name}</td><td>${item.item || '-'}</td><td class="text-center">${item.phone || '-'}</td><td class="text-center" style="font-weight:bold;">${p.toLocaleString()} ${symbol}</td><td class="no-print text-center"><button style="color:red; cursor:pointer; background:none; border:none;" onclick="deleteRow(${index})">✕</button></td></tr>`;
+            });
+            document.getElementById('totalUSD').innerText = totalUSD.toLocaleString() + " $";
+            document.getElementById('totalKHR').innerText = totalKHR.toLocaleString() + " ៛";
+        }
+        function addNewData() {
+            const date = document.getElementById('dateInput').value;
+            const name = document.getElementById('nameInput').value;
+            const item = document.getElementById('itemInput').value;
+            const phone = document.getElementById('phoneInput').value;
+            const price = document.getElementById('priceInput').value;
+            const currency = document.getElementById('currencyInput').value;
+            if (!name || !price) return alert("សូមបំពេញឈ្មោះ និងតម្លៃ!");
+            donations.push({ date, name, item, phone, price: parseFloat(price), currency });
+            localStorage.setItem('donations', JSON.stringify(donations));
+            renderTable(donations);
+            document.getElementById('nameInput').value = ''; document.getElementById('itemInput').value = ''; document.getElementById('phoneInput').value = ''; document.getElementById('priceInput').value = '';
+        }
+        function deleteRow(idx) { if(confirm("លុបទិន្នន័យនេះ?")) { donations.splice(idx, 1); localStorage.setItem('donations', JSON.stringify(donations)); renderTable(donations); } }
+        function exportToExcel() { const ws = XLSX.utils.json_to_sheet(donations); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Donations"); XLSX.writeFile(wb, "បញ្ជីសប្បុរសជន.xlsx"); }
+        window.onload = function() { document.getElementById('dateInput').value = new Date().toISOString().split('T')[0]; renderTable(donations); };
+    </script>
+</body>
+</html>
